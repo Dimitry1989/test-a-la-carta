@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Test a la Carta</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      padding: 2rem;
+      background-color: #f7f7f7;
+    }
+    .contenedor {
+      max-width: 600px;
+      margin: auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 1rem;
+    }
+    select {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.3rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 2rem;
+      width: 100%;
+      padding: 1rem;
+      background-color: #0044cc;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #003399;
+    }
+  </style>
+</head>
+<body>
+  <div class="contenedor">
+    <h2>🧠 Test a la Carta</h2>
+
+    <label for="bloque">Bloque</label>
+    <select id="bloque" onchange="mostrarTemas()">
+      <option value="">Selecciona un bloque</option>
+      <option value="todos">🧩 Todos los bloques</option>
+      <option value="juridico">📘 Ciencias Jurídicas</option>
+      <option value="sociologia">📗 Sociología</option>
+      <option value="tecnocientificas">📙 Tecnocientíficas</option>
+    </select>
+
+    <label for="tema">Tema</label>
+    <select id="tema">
+      <option value="">Selecciona un tema</option>
+    </select>
+
+    <label for="cantidad">Número de preguntas</label>
+    <select id="cantidad">
+      <option value="">Selecciona cuántas</option>
+      <option value="5">5 preguntas</option>
+      <option value="10">10 preguntas</option>
+      <option value="20">20 preguntas</option>
+      <option value="50">50 preguntas</option>
+      <option value="100">100 preguntas</option>
+    </select>
+
+    <button onclick="irAlTest()">Empezar Test →</button>
+  </div>
+
+  <script>
+    const temasPorBloque = {
+      juridico: {
+        "T01": "01. El Derecho",
+        "T02": "02. Constitución Española (I)",
+        "T03": "03. Constitución Española (II)",
+        "T04": "04. La Unión Europea",
+        "T05": "05. Administración General del Estado",
+        "T06": "06. Los funcionarios Públicos",
+        "T07": "07. Ministerio del Interior",
+        "T08": "08. Dirección General de la Policía",
+        "T09": "09. LO 2/86, FFCCSS",
+        "T10": "10. Entrada, libre circulación y residencia en España",
+        "T11": "11. Infracciones en materia de extranjería",
+        "T12": "12. Protección Internacional",
+        "T13": "13. Seguridad Privada",
+        "T14": "14. LO 4/2015, Seguridad Ciudadana",
+        "T15": "15. Infraestructuras críticas",
+        "T16": "16. Derecho Penal",
+        "T17": "17. Derecho Penal Especial",
+        "T18": "18. Delitos contra el patrimonio",
+        "T19": "19. Delitos contra el orden público",
+        "T20": "20. Delitos informáticos",
+        "T21": "21. Derecho Procesal Penal",
+        "T22": "22. Estatuto de la víctima del delito",
+        "T23": "23. Viogen",
+        "T24": "24. Protección de Riesgos Laborales",
+        "T25": "25. Marco normativo PRL",
+        "T26": "26. Protección de datos personales"
+      },
+      sociologia: {
+        "T27": "27. Derechos humanos",
+        "T28": "28. Globalización",
+        "T29": "29. Actitudes y valores sociales",
+        "T30": "30. Principios éticos",
+        "T31": "31. Inmigración",
+        "T32": "32. Geografía humana",
+        "T33": "33. La seguridad",
+        "T34": "34. Drogodependencias",
+        "T35": "35. Desarrollo sostenible",
+        "T36": "36. Gramática",
+        "T37": "37. Ortografía"
+      },
+      tecnocientificas: {
+        "T38": "38. Sistemas operativos",
+        "T39": "39. Redes informáticas",
+        "T40": "40. Inteligencia",
+        "T41": "41. Ciberdelincuencia",
+        "T42": "42. Origen de las armas de fuego",
+        "T43": "43. El vehículo prioritario",
+        "T44": "44. Seguridad en la conducción",
+        "T45": "45. PRL en Seguridad Vial"
+      }
+    };
+
+    function mostrarTemas() {
+      const bloque = document.getElementById("bloque").value;
+      const temaSelect = document.getElementById("tema");
+
+      temaSelect.innerHTML = "";
+      temaSelect.disabled = false;
+
+      if (bloque === "todos") {
+        // Si se selecciona "Todos los bloques"
+        const opt = document.createElement("option");
+        opt.value = "todos";
+        opt.textContent = "🧩 Todos los temas";
+        temaSelect.appendChild(opt);
+        temaSelect.disabled = true; // desactivar campo
+        return;
+      }
+
+      let temas = {};
+      if (temasPorBloque[bloque]) {
+        temas = temasPorBloque[bloque];
+      }
+
+      // Añadir opción por defecto
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "";
+      defaultOption.textContent = "Selecciona un tema";
+      temaSelect.appendChild(defaultOption);
+
+      // Opción "Todos los temas"
+      const allOption = document.createElement("option");
+      allOption.value = "todos";
+      allOption.textContent = "🧩 Todos los temas";
+      temaSelect.appendChild(allOption);
+
+      for (const clave in temas) {
+        const opt = document.createElement("option");
+        opt.value = clave;
+        opt.textContent = temas[clave];
+        temaSelect.appendChild(opt);
+      }
+    }
+
+
+
+    function irAlTest() {
+      const tema = document.getElementById("tema").value;
+      const cantidad = document.getElementById("cantidad").value;
+
+      if (!tema || !cantidad) {
+        alert("Por favor, selecciona un tema y número de preguntas.");
+        return;
+      }
+
+      const url = `https://tucurso.moodle.com/mod/quiz/view.php?id=${tema}_${cantidad}`;
+      window.open(url, "_blank");
+    }
+    function irAlTest() {
+      const bloque = document.getElementById("bloque").value;
+      const tema = document.getElementById("tema").value;
+      const cantidad = document.getElementById("cantidad").value;
+//Tema 1
+      if (bloque === "juridico" && tema === "T01" && cantidad === "5") {
+        const url = "https://divisazul.es/moodle1/mod/quiz/view.php?id=390"; // reemplaza por tu URL real
+        window.open(url, "_blank", "width=1200,height=800,toolbar=no,scrollbars=yes,resizable=no");
+        return;
+      }
+      if (bloque === "juridico" && tema === "T01" && cantidad === "10") {
+        const url = "https://divisazul.es/moodle1/mod/quiz/view.php?id=391"; // reemplaza por tu URL real
+        window.open(url, "_blank", "width=1200,height=800,toolbar=no,scrollbars=yes,resizable=no");
+        return;
+      }
+
+      alert("Aún no se ha creado un test para esta combinación.");
+    }
+  </script>
+</body>
+</html>
